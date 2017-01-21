@@ -2,4 +2,9 @@
 server:
   port: 8080
   context-path: /MyVideo
-  
+
+#  #  Tomcat
+#  tomcat:
+#    max-threads: 800
+#    uri-encoding: utf-8
+#    basedir: E:\Software\Tomcat\apache-tomcat-9.0.0.M13

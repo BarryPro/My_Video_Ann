@@ -2,21 +2,49 @@ package com.belong.mapper;
 
 import com.belong.model.User;
 import com.belong.model.UserExample;
-import java.util.List;
-import org.apache.ibatis.annotations.Delete;
-import org.apache.ibatis.annotations.DeleteProvider;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.InsertProvider;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Result;
-import org.apache.ibatis.annotations.Results;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.SelectProvider;
-import org.apache.ibatis.annotations.Update;
-import org.apache.ibatis.annotations.UpdateProvider;
+import org.apache.ibatis.annotations.*;
 import org.apache.ibatis.type.JdbcType;
 
+import java.util.List;
+import java.util.Map;
+
 public interface UserMapper {
+
+    @Select({
+            "SELECT * ",
+            "FROM user ",
+            "WHERE username=#{user.username,jdbcType=VARCHAR} and ",
+            "password=#{user.password,jdbcType=VARCHAR}"
+    })
+    @Results({
+            @Result(column="id", property="id", jdbcType=JdbcType.INTEGER, id=true),
+            @Result(column="username", property="username", jdbcType=JdbcType.VARCHAR),
+            @Result(column="password", property="password", jdbcType=JdbcType.VARCHAR),
+            @Result(column="pagenum", property="pagenum", jdbcType=JdbcType.INTEGER),
+            @Result(column="pic", property="pic", jdbcType=JdbcType.LONGVARBINARY)
+    })
+    User login(Map map);
+
+    @Select({
+            "SELECT pic ",
+            "FROM user ",
+            "WHERE id = #{id,jdbcType=INTEGER}"
+    })
+    @Results({
+            @Result(column="pic", property="pic", jdbcType=JdbcType.LONGVARBINARY)
+    })
+    User getPic(Map map);
+
+    @Insert({
+            "insert into user (username, ",
+            "password ,pic) ",
+            "values (",
+            "#{user.username,jdbcType=VARCHAR}, ",
+            "#{user.password,jdbcType=VARCHAR}, ",
+            "#{user.pic,jdbcType=LONGVARBINARY})"
+    })
+    int register(Map map);
+
     @SelectProvider(type=UserSqlProvider.class, method="countByExample")
     int countByExample(UserExample example);
 

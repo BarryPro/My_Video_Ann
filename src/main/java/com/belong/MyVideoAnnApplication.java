@@ -9,4 +9,6 @@ public class MyVideoAnnApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(MyVideoAnnApplication.class, args);
 	}
+
+
 }

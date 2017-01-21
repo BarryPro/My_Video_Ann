@@ -14,7 +14,6 @@ spring:
       expose-spring-macro-helpers: true
   #  数据源
   datasource:
-    name: video
     url: jdbc:mysql://127.0.0.1:3306/video?useUnicode=true&characterEncoding=UTF-8
     username: root
     password: root
@@ -31,9 +30,10 @@ spring:
     validationQuery: select 'x'
     testWhileIdle: true
     testOnBorrow: false
-    testOnReturn: false
+    testOnReturn: true
     poolPreparedStatements: true
     maxOpenPreparedStatements: 20
+    name: video
   # 加载其他配置文件
   profiles:
     include: msg,server
@@ -41,10 +41,11 @@ spring:
   http:
     multipart:
       enabled: true
-  # redis
+  # redis(没有设置密码)
   redis:
     host: localhost
-    password: belong
     port: 6379
+    database: 0
+
 
 

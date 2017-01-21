@@ -29,7 +29,7 @@ public class MyBatisMapperScannerConfig {
         MapperScannerConfigurer mapperScannerConfigurer = new MapperScannerConfigurer();
         mapperScannerConfigurer.setSqlSessionFactoryBeanName("sqlSessionFactory");
         //设置mapper包名
-        mapperScannerConfigurer.setBasePackage("com.belong.dao");
+        mapperScannerConfigurer.setBasePackage("com.belong.mapper");
         Properties properties = new Properties();
         //设置基类mapper包名 设置通用map插件
 //        properties.setProperty("mappers", "com.belong.util.MyMapper");
