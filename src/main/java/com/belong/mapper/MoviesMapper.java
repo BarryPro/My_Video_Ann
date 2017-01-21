@@ -1,121 +1,114 @@
 package com.belong.mapper;
 
+import com.belong.model.Article;
 import com.belong.model.Movies;
-import com.belong.model.MoviesExample;
-import com.belong.model.MoviesWithBLOBs;
-import java.util.List;
-import org.apache.ibatis.annotations.Delete;
-import org.apache.ibatis.annotations.DeleteProvider;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.InsertProvider;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Result;
-import org.apache.ibatis.annotations.Results;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.SelectProvider;
-import org.apache.ibatis.annotations.Update;
-import org.apache.ibatis.annotations.UpdateProvider;
+import org.apache.ibatis.annotations.*;
+import org.apache.ibatis.mapping.StatementType;
 import org.apache.ibatis.type.JdbcType;
 
+import java.util.ArrayList;
+import java.util.Map;
+
 public interface MoviesMapper {
-    @SelectProvider(type=MoviesSqlProvider.class, method="countByExample")
-    int countByExample(MoviesExample example);
-
-    @DeleteProvider(type=MoviesSqlProvider.class, method="deleteByExample")
-    int deleteByExample(MoviesExample example);
-
-    @Delete({
-        "delete from movies",
-        "where Vid = #{vid,jdbcType=INTEGER}"
+    @Select({
+            "SELECT Vsrc",
+            "FROM movies",
+            "WHERE Vid = #{vid,jdbcType=INTEGER}"
     })
-    int deleteByPrimaryKey(Integer vid);
-
-    @Insert({
-        "insert into movies (Vid, Vdate, ",
-        "id, views, Vname, ",
-        "Vinfo, Vpic, ",
-        "Vsrc)",
-        "values (#{vid,jdbcType=INTEGER}, #{vdate,jdbcType=DATE}, ",
-        "#{id,jdbcType=INTEGER}, #{views,jdbcType=DECIMAL}, #{vname,jdbcType=LONGVARCHAR}, ",
-        "#{vinfo,jdbcType=LONGVARCHAR}, #{vpic,jdbcType=LONGVARBINARY}, ",
-        "#{vsrc,jdbcType=LONGVARCHAR})"
-    })
-    int insert(MoviesWithBLOBs record);
-
-    @InsertProvider(type=MoviesSqlProvider.class, method="insertSelective")
-    int insertSelective(MoviesWithBLOBs record);
-
-    @SelectProvider(type=MoviesSqlProvider.class, method="selectByExampleWithBLOBs")
     @Results({
-        @Result(column="Vid", property="vid", jdbcType=JdbcType.INTEGER, id=true),
-        @Result(column="Vdate", property="vdate", jdbcType=JdbcType.DATE),
-        @Result(column="id", property="id", jdbcType=JdbcType.INTEGER),
-        @Result(column="views", property="views", jdbcType=JdbcType.DECIMAL),
-        @Result(column="Vname", property="vname", jdbcType=JdbcType.LONGVARCHAR),
-        @Result(column="Vinfo", property="vinfo", jdbcType=JdbcType.LONGVARCHAR),
-        @Result(column="Vpic", property="vpic", jdbcType=JdbcType.LONGVARBINARY),
-        @Result(column="Vsrc", property="vsrc", jdbcType=JdbcType.LONGVARCHAR)
+            @Result(column="Vsrc", property="vsrc", jdbcType=JdbcType.LONGVARBINARY)
     })
-    List<MoviesWithBLOBs> selectByExampleWithBLOBs(MoviesExample example);
-
-    @SelectProvider(type=MoviesSqlProvider.class, method="selectByExample")
-    @Results({
-        @Result(column="Vid", property="vid", jdbcType=JdbcType.INTEGER, id=true),
-        @Result(column="Vdate", property="vdate", jdbcType=JdbcType.DATE),
-        @Result(column="id", property="id", jdbcType=JdbcType.INTEGER),
-        @Result(column="views", property="views", jdbcType=JdbcType.DECIMAL)
-    })
-    List<Movies> selectByExample(MoviesExample example);
+    Movies getPath(Map map);
 
     @Select({
-        "select",
-        "Vid, Vdate, id, views, Vname, Vinfo, Vpic, Vsrc",
-        "from movies",
-        "where Vid = #{vid,jdbcType=INTEGER}"
+            "SELECT Vpic",
+            "FROM movies",
+            "WHERE Vid = #{vid,jdbcType=INTEGER}"
     })
     @Results({
-        @Result(column="Vid", property="vid", jdbcType=JdbcType.INTEGER, id=true),
-        @Result(column="Vdate", property="vdate", jdbcType=JdbcType.DATE),
-        @Result(column="id", property="id", jdbcType=JdbcType.INTEGER),
-        @Result(column="views", property="views", jdbcType=JdbcType.DECIMAL),
-        @Result(column="Vname", property="vname", jdbcType=JdbcType.LONGVARCHAR),
-        @Result(column="Vinfo", property="vinfo", jdbcType=JdbcType.LONGVARCHAR),
-        @Result(column="Vpic", property="vpic", jdbcType=JdbcType.LONGVARBINARY),
-        @Result(column="Vsrc", property="vsrc", jdbcType=JdbcType.LONGVARCHAR)
+            @Result(column="Vpic", property="vpic", jdbcType=JdbcType.LONGVARBINARY)
     })
-    MoviesWithBLOBs selectByPrimaryKey(Integer vid);
-
-    @UpdateProvider(type=MoviesSqlProvider.class, method="updateByExampleSelective")
-    int updateByExampleSelective(@Param("record") MoviesWithBLOBs record, @Param("example") MoviesExample example);
-
-    @UpdateProvider(type=MoviesSqlProvider.class, method="updateByExampleWithBLOBs")
-    int updateByExampleWithBLOBs(@Param("record") MoviesWithBLOBs record, @Param("example") MoviesExample example);
-
-    @UpdateProvider(type=MoviesSqlProvider.class, method="updateByExample")
-    int updateByExample(@Param("record") Movies record, @Param("example") MoviesExample example);
-
-    @UpdateProvider(type=MoviesSqlProvider.class, method="updateByPrimaryKeySelective")
-    int updateByPrimaryKeySelective(MoviesWithBLOBs record);
+    Movies getPic(Map map);
 
     @Update({
-        "update movies",
-        "set Vdate = #{vdate,jdbcType=DATE},",
-          "id = #{id,jdbcType=INTEGER},",
-          "views = #{views,jdbcType=DECIMAL},",
-          "Vname = #{vname,jdbcType=LONGVARCHAR},",
-          "Vinfo = #{vinfo,jdbcType=LONGVARCHAR},",
-          "Vpic = #{vpic,jdbcType=LONGVARBINARY},",
-          "Vsrc = #{vsrc,jdbcType=LONGVARCHAR}",
-        "where Vid = #{vid,jdbcType=INTEGER}"
+            "UPDATE movies",
+            "SET views = views + 1",
+            "WHERE Vid = #{vid,jdbcType=INTEGER}"
     })
-    int updateByPrimaryKeyWithBLOBs(MoviesWithBLOBs record);
+    int views(Map map);
 
-    @Update({
-        "update movies",
-        "set Vdate = #{vdate,jdbcType=DATE},",
-          "id = #{id,jdbcType=INTEGER},",
-          "views = #{views,jdbcType=DECIMAL}",
-        "where Vid = #{vid,jdbcType=INTEGER}"
+
+    @Select("call pro_pagenum1( " +
+            " #{Vtype , mode=IN ,jdbcType=INTEGER}, " +
+            " #{cur_page ,mode=IN ,jdbcType=INTEGER}, " +
+            " #{Uid,  mode=IN ,jdbcType=INTEGER}, " +
+            " #{row_num , mode=OUT ,jdbcType=INTEGER}, " +
+            " #{row_total ,mode=OUT ,jdbcType=INTEGER}, " +
+            " #{page_total,  mode=OUT ,jdbcType=INTEGER})")
+    @Options(statementType = StatementType.CALLABLE)
+    @Results({
+            @Result(column="Vid", property="vid", jdbcType=JdbcType.INTEGER, id=true),
+            @Result(column="Vdate", property="vdate", jdbcType=JdbcType.DATE),
+            @Result(column="id", property="id", jdbcType=JdbcType.INTEGER),
+            @Result(column="views", property="views", jdbcType=JdbcType.DECIMAL),
+            @Result(column="Vname", property="vname", jdbcType=JdbcType.LONGVARCHAR),
+            @Result(column="Vinfo", property="vinfo", jdbcType=JdbcType.LONGVARCHAR),
+            @Result(column="Vpic", property="vpic", jdbcType=JdbcType.LONGVARBINARY),
+            @Result(column="Vsrc", property="vsrc", jdbcType=JdbcType.LONGVARCHAR)
     })
-    int updateByPrimaryKey(Movies record);
+    ArrayList<Movies> getInfo(Map map);
+
+    @Select("call pro_pagenum2( " +
+            " #{txt , mode=IN ,jdbcType=VARCHAR}, " +
+            " #{cur_page ,mode=IN ,jdbcType=INTEGER}, " +
+            " #{Uid,  mode=IN ,jdbcType=INTEGER}, " +
+            " #{row_num , mode=OUT ,jdbcType=INTEGER}, " +
+            " #{row_total ,mode=OUT ,jdbcType=INTEGER}, " +
+            " #{page_total,  mode=OUT ,jdbcType=INTEGER} " +
+            " )")
+    @Options(statementType = StatementType.CALLABLE)
+    @Results({
+            @Result(column="Vid", property="vid", jdbcType=JdbcType.INTEGER, id=true),
+            @Result(column="Vdate", property="vdate", jdbcType=JdbcType.DATE),
+            @Result(column="id", property="id", jdbcType=JdbcType.INTEGER),
+            @Result(column="views", property="views", jdbcType=JdbcType.DECIMAL),
+            @Result(column="Vname", property="vname", jdbcType=JdbcType.LONGVARCHAR),
+            @Result(column="Vinfo", property="vinfo", jdbcType=JdbcType.LONGVARCHAR),
+            @Result(column="Vpic", property="vpic", jdbcType=JdbcType.LONGVARBINARY),
+            @Result(column="Vsrc", property="vsrc", jdbcType=JdbcType.LONGVARCHAR)
+    })
+    ArrayList<Movies> search(Map map);
+
+    @Insert("call pro_upload_movies( " +
+            " #{_Vname , mode=IN ,jdbcType=LONGVARCHAR}, " +
+            " #{_Vinfo ,mode=IN ,jdbcType=LONGVARCHAR}, " +
+            " #{_Vpic,  mode=IN ,jdbcType=LONGVARBINARY}, " +
+            " #{_Vsrc , mode=IN ,jdbcType=LONGVARCHAR}, " +
+            " #{_id ,mode=IN ,jdbcType=INTEGER}, " +
+            " #{_mytype,  mode=IN ,jdbcType=VARCHAR}, " +
+            " #{_Vdirector ,mode=IN ,jdbcType=LONGVARCHAR}, " +
+            " #{_Vactor,  mode=IN ,jdbcType=LONGVARCHAR} " +
+            " )")
+    @Options(statementType = StatementType.CALLABLE)
+    int upload(Map map);
+
+    @Select("call pro_pagenum3( " +
+            " #{Uid , mode=IN ,jdbcType=INTEGER}, " +
+            " #{a_Vid ,mode=IN ,jdbcType=INTEGER}, " +
+            " #{cur_page,  mode=IN ,jdbcType=INTEGER}, " +
+            " #{page_total , mode=OUT ,jdbcType=INTEGER}, " +
+            " #{row_total ,mode=OUT ,jdbcType=INTEGER}, " +
+            " #{a_pagenum,  mode=OUT ,jdbcType=INTEGER} " +
+            " )")
+    @Options(statementType = StatementType.CALLABLE)
+    @Results({
+            @Result(column="Aid", property="aid", jdbcType=JdbcType.INTEGER, id=true),
+            @Result(column="Uid", property="uid", jdbcType=JdbcType.INTEGER),
+            @Result(column="Agree", property="agree", jdbcType=JdbcType.INTEGER),
+            @Result(column="Adate", property="adate", jdbcType=JdbcType.DATE),
+            @Result(column="Vid", property="vid", jdbcType=JdbcType.INTEGER),
+            @Result(column="Disagree", property="disagree", jdbcType=JdbcType.INTEGER),
+            @Result(column="Acontent", property="acontent", jdbcType=JdbcType.LONGVARCHAR)
+    })
+    ArrayList<Article> query(Map map);
 }

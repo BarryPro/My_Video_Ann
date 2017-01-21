@@ -45,4 +45,9 @@ public class UserServiceImpl implements IUserService {
         return dao.register(map);
     }
 
+    @Override
+    public int updateVideoNumber(Map map) {
+        return dao.updateVideoNumber(map);
+    }
+
 }

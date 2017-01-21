@@ -1,7 +1,6 @@
 package com.belong.controller;
 
 import com.belong.encrypt.MD5;
-import com.belong.model.User;
 import com.belong.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -206,6 +205,17 @@ public class UserController {
                 map.put(MSG,RFAILED);
             }
         }
+        return HOME;
+    }
+
+    @RequestMapping(value = "/num_setting")
+    public String getSelect(@RequestParam("value") int value,
+                            @RequestParam("userid") int userid,
+                            Map map){
+        map.put("id",userid);
+        map.put("pagenum",value);
+        service.updateVideoNumber(map);
+        map.put(MSG,UPDATE);
         return HOME;
     }
 

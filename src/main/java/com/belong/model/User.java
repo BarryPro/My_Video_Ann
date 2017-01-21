@@ -2,7 +2,7 @@ package com.belong.model;
 
 import java.io.Serializable;
 
-public class User implements Serializable {
+public class User implements Serializable{
     private Integer id;
 
     private String username;
@@ -12,6 +12,16 @@ public class User implements Serializable {
     private Integer pagenum;
 
     private byte[] pic;
+
+    public String getPath() {
+        return path;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
+    }
+
+    private String path;
 
     public Integer getId() {
         return id;

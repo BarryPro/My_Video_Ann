@@ -2,7 +2,7 @@ package com.belong.model;
 
 import java.io.Serializable;
 
-public class Type implements Serializable {
+public class Type implements Serializable{
     private Integer vid;
 
     private String tid;

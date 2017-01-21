@@ -11,4 +11,5 @@ public interface IUserService {
     User login(Map map);
     User getPic(Map map);
     int register(Map map);
+    int updateVideoNumber(Map map);
 }
