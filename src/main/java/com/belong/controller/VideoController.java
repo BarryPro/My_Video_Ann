@@ -88,7 +88,7 @@ public class VideoController {
     }
 
     @RequestMapping(value = "/pic/Vid/{vid}")
-    public String getPic(@PathVariable(value = "vid") int vid,
+    public String getPic(@PathVariable(value = "vid") Object vid,
                          HttpServletResponse response,
                          Map map){
         response.setContentType(IMAGE);
@@ -108,7 +108,7 @@ public class VideoController {
     }
 
     @RequestMapping(value = "/src/Vid/{vid}")
-    public String getPath(@PathVariable(value = "vid") int vid,
+    public String getPath(@PathVariable(value = "vid") Object vid,
                           Map map){
         map.put("vid",vid);
         service.views(map);

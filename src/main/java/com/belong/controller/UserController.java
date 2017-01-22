@@ -1,6 +1,7 @@
 package com.belong.controller;
 
 import com.belong.encrypt.MD5;
+import com.belong.model.User;
 import com.belong.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

@@ -13,8 +13,6 @@
   <link href="${my_path}/static/css/style.css" rel='stylesheet' type='text/css' media="all"/>
   <script src="${my_path}/static/js/jquery-1.11.1.min.js"></script>
   <script src="${my_path}/static/js/diy/ajax.js"></script>
-  <script type="text/javascript" src="${my_path}/static/ckeditor/ckeditor.js"></script>
-  <script type="text/javascript" src="${my_path}/static/ckfinder/ckfinder.js"></script>
   <script type="text/javascript" src="${my_path}/static/js/jquery.cookie.js"></script>
   <link rel="stylesheet" type="text/css" href="${my_path}/static/css/checkbox.css"/>
   <script src="${my_path}/static/js/responsiveslides.min.js"></script>

@@ -9,19 +9,27 @@
         width: 17px;
         height: 17px;
     }
+    .ft{
+        background-color: black;
+        color: white;
+        width: 200px;
+    }
+    .tm{
+        background-color:#336699;
+        filter:Alpha(opacity=50)
+    }
 </style>
 <#include "../video/particle.ftl">
 <body>
 <input type="hidden" id="_path" value="${my_path}/"/>
 <input type="hidden" id="_user" value=""/>
-<c:set var="review" value=""></c:set>
 <div align="center" style="padding-top: inherit">
-    <table width="790px" cellpadding="0" cellspacing="1" border="1">
+    <table width="1000px" cellpadding="0" cellspacing="1" border="1">
         <tr>
             <td rowspan="6" width="28%">
-                <a href="${my_path}/my_video/src/Vid/${review.vid}">
-                <img width="240" height="338" id="_views"
-                     src="${my_path}/my_video/pic/Vid/${review.vid}" alt="tupian" /></a>
+                <a href="${my_path}/my_video/src/Vid/${review.video.vid}">
+                <img width="280" height="338" id="_views"
+                     src="${my_path}/my_video/pic/Vid/${review.video.vid}" alt="picture" /></a>
             </td>
             <td width="72%"><span class="_mycolor">影片名：</span>${review.video.vname}</td>
         </tr>
@@ -39,7 +47,7 @@
         </tr>
         <tr>
             <td>
-                <DIV style="overflow-y:scroll; WIDTH:560px;HEIGHT:200px;background-color:white color:black">
+                <DIV style="overflow-y:scroll; WIDTH:718px;HEIGHT:200px;background-color:white color:black">
                 ${review.video.vinfo}</DIV>
             </td>
         </tr>
@@ -56,19 +64,7 @@
     </div>
 </div>
 <div align="center">
-    <textarea id="content" name="content" rows="5"
-              cols="50"></textarea>
-    <script type="text/javascript">
-        //配置ckeditor
-        CKEDITOR.replace('content',{
-            filebrowserBrowseUrl : '${my_path}/static/ckfinder/ckfinder.html',
-            filebrowserImageBrowseUrl : '${my_path}/static/ckfinder/ckfinder.html?type=Images',
-            filebrowserFlashBrowseUrl : '${my_path}/static/ckfinder/ckfinder.html?type=Flash',
-            filebrowserUploadUrl : '${my_path}/static/userfiles',
-            filebrowserImageUploadUrl : '${my_path}/static/userfiles/images',
-            filebrowserFlashUploadUrl : '${my_path}/static/userfiles/flash'
-        });
-    </script>
+    <#include "../video/pl.ftl">
 </div>
 <link href="${my_path}/static/css/diy.css" rel='stylesheet' type='text/css' media="all"/>
 <div align="center">
@@ -94,9 +90,9 @@
                         old_context = $(this).attr("alt")
                         $("#_submit").empty();
                         $("#_submit").append(
-                                '<table width="800px" id="tabelarticle" class="table-striped table-bordered">'+
+                                '<table width="1000px" id="tabelarticle" class="table-striped table-bordered">'+
                                 '<tr><td width="90%"><span style="color: #00CCFF">你对这部电影有什么看法，快和大家一起分享一下吧?</span></td>' +
-                                '<td width="10%"><input style="background: chocolate" type="button" id="reply" value="   回   帖   "/></td></tr>' +
+                                '<td width="10%"><input class="ft" type="button" id="reply" value="   回   帖   "/></td></tr>' +
                                 '</table>'
                         );
                         reply(username,old_context);
@@ -141,7 +137,7 @@
             function showArticle(data){
                 $("#article_head").empty();
                 $("#article_head").append(
-                        '<table width="800px" class="table-striped table-bordered">'+
+                        '<table width="1000px" class="table-striped table-bordered">'+
                         '<tr>' +
                             '<th width="10%""><span>头像</span></th>' +
                             '<th width="80%">评论内容</th>' +
@@ -150,7 +146,7 @@
                 $("#article_info").empty();
                 $(data.articles).each(function(i,article){
                     _path = $("#_path").attr("value");
-                    if($("#my_image").attr("title") == article.uid){
+                    if($("#my_image").attr("title") == article.user.id){
                         article_info_delete(data,article);
                     } else {
                         article_info(data,article);
@@ -182,9 +178,8 @@
                 $.ajax({
                     url:_path+'/my_review/query',
                     type:'post',
-                    data:'content='+CKEDITOR.instances.content.getData()+
-                    '&userid='+$("#my_image").attr("title")+'&rootid='+0+'&Vid='+
-                    ${review.vid}+'&cur_page='+n,
+                    data:'&userid='+$("#my_image").attr("title")+'&Vid='+
+                    ${review.video.vid}+'&cur_page='+n,
                     dataType:'json',
                     success:showArticle
                 });
@@ -193,7 +188,7 @@
             function add_Article(){
                 $("#_article").click(function() {
                     //只有登陆的用户才有发评论的资格
-                    context = CKEDITOR.instances.content.getData();
+                    context = $("#_content").html();
                     if($("#my_image").attr("title") != -1){
                         if(context != ''){
                             _path = $("#_path").attr("value");
@@ -202,7 +197,7 @@
                                 type:'post',
                                 data:'acontent='+context+
                                 '&uid='+$("#my_image").attr("title")+'&arootid='+0+'&Vid='+
-                                ${review.vid}+'&cur_page='+$("#max_page_hidden").attr("title"),
+                                ${review.video.vid}+'&cur_page='+$("#max_page_hidden").attr("title"),
                                 dataType:'json',
                                 success:showArticle
                             });
@@ -211,18 +206,18 @@
                         $("#_login").trigger("click");
                     }
                     //清空在线编辑器的内容
-                    CKEDITOR.instances.content.setData("");
+                    $("#_content").html("")
                     show_article(1);
                 })
             }
 
             function article_info(data,article){
                 $("#article_info").append(
-                        '<table id="_table" width="800px" class="table-striped table-bordered">'+
+                        '<table id="_table" width="1000px" class="tm table-striped table-bordered">'+
                         '<tr>' +
                         '<td width="10%">' +
                         '<div style="width:36px; height:36px; border-radius:50%;overflow: hidden" class="_articleImg">' +
-                        '<img width="36px" height="36px" src='+_path+'/my_user/pic/userid/'+article.uid+' class="user_avatar' +
+                        '<img width="36px" height="36px" src='+_path+'/my_user/pic/userid/'+article.user.id+' class="user_avatar' +
                         'style="width:100% "/></div><span class="fontuser">'+article.user.username+'</span></td>' +
                         '<td width="90%"><span>'+article.acontent+'</span>'+
                         '<div class="_articlelayout"><span class="_articlefont">'+article.adate+'</span>' +
@@ -239,20 +234,20 @@
             function release(){
                 $("#_submit").empty();
                 $("#_submit").append(
-                        '<table width="800px" id="tabelarticle" class="table-striped table-bordered">'+
+                        '<table width="1000px" id="tabelarticle" class="tm table-striped table-bordered">'+
                         '<tr><td width="90%"><span style="color: #00CCFF">你对这部电影有什么看法，快和大家一起分享一下吧?(如果发帖没发出去，请刷新后重新发送)</span></td>' +
-                        '<td width="10%"><input style="background: chocolate" type="button" id="_article" value="   发   帖   "/></td></tr>' +
+                        '<td width="10%"><input class="ft" type="button" id="_article" value="   发   帖   "/></td></tr>' +
                         '</table>'
                 );
             }
 
             function article_info_delete(data,article){
                 $("#article_info").append(
-                        '<table id="_table" width="800px" class="table-striped table-bordered">'+
+                        '<table id="_table" width="1000px" class="table-striped table-bordered">'+
                         '<tr>' +
                         '<td width="10%">' +
                         '<div style="width:36px; height:36px; border-radius:50%;overflow: hidden" class="_articleImg">' +
-                        '<img width="36px" height="36px" src='+_path+'/my_user/pic/userid/'+article.uid+' class="user_avatar" ' +
+                        '<img width="36px" height="36px" src='+_path+'/my_user/pic/userid/'+article.user.id+' class="user_avatar" ' +
                         'style="width:100% "/></div><span class="fontuser">'+article.user.username+'</span></td>' +
                         '<td width="90%">'+article.acontent+
                         '<div class="_articlelayout"><span class="_articlefont">'+article.adate+'</span>' +

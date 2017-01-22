@@ -49,4 +49,19 @@ public interface UserMapper {
             "WHERE id = #{id,jdbcType=INTEGER} "
     })
     int updateVideoNumber(Map map);
+
+    @Select({
+            "SELECT * ",
+            "FROM user ",
+            "WHERE id = #{id} "
+    })
+    @Results({
+            @Result(column="id", property="id", jdbcType=JdbcType.INTEGER, id=true),
+            @Result(column="username", property="username", jdbcType=JdbcType.VARCHAR),
+            @Result(column="password", property="password", jdbcType=JdbcType.VARCHAR),
+            @Result(column="pagenum", property="pagenum", jdbcType=JdbcType.INTEGER),
+            @Result(column="pic", property="pic", jdbcType=JdbcType.LONGVARBINARY)
+    })
+    User queryUserById(Integer id);
+
 }

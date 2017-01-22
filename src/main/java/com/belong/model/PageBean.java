@@ -17,6 +17,7 @@ public class PageBean implements Serializable{
     private ArrayList<Movies> data;//存放电影信息
     private ArrayList<Article> articles;//用于存放评论信息
 
+
     public ArrayList<Article> getArticles() {
         return articles;
     }

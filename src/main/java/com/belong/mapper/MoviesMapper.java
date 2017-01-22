@@ -1,6 +1,5 @@
 package com.belong.mapper;
 
-import com.belong.model.Article;
 import com.belong.model.Movies;
 import org.apache.ibatis.annotations.*;
 import org.apache.ibatis.mapping.StatementType;
@@ -49,7 +48,8 @@ public interface MoviesMapper {
     @Results({
             @Result(column="Vid", property="vid", jdbcType=JdbcType.INTEGER, id=true),
             @Result(column="Vdate", property="vdate", jdbcType=JdbcType.DATE),
-            @Result(column="id", property="id", jdbcType=JdbcType.INTEGER),
+            @Result(column="id", property="user", jdbcType=JdbcType.INTEGER,
+                    one = @One(select = "com.belong.mapper.UserMapper.queryUserById")),
             @Result(column="views", property="views", jdbcType=JdbcType.DECIMAL),
             @Result(column="Vname", property="vname", jdbcType=JdbcType.LONGVARCHAR),
             @Result(column="Vinfo", property="vinfo", jdbcType=JdbcType.LONGVARCHAR),
@@ -70,7 +70,8 @@ public interface MoviesMapper {
     @Results({
             @Result(column="Vid", property="vid", jdbcType=JdbcType.INTEGER, id=true),
             @Result(column="Vdate", property="vdate", jdbcType=JdbcType.DATE),
-            @Result(column="id", property="id", jdbcType=JdbcType.INTEGER),
+            @Result(column="id", property="user", jdbcType=JdbcType.INTEGER,
+                    one = @One(select = "com.belong.mapper.UserMapper.queryUserById")),
             @Result(column="views", property="views", jdbcType=JdbcType.DECIMAL),
             @Result(column="Vname", property="vname", jdbcType=JdbcType.LONGVARCHAR),
             @Result(column="Vinfo", property="vinfo", jdbcType=JdbcType.LONGVARCHAR),
@@ -92,23 +93,23 @@ public interface MoviesMapper {
     @Options(statementType = StatementType.CALLABLE)
     int upload(Map map);
 
-    @Select("call pro_pagenum3( " +
-            " #{Uid , mode=IN ,jdbcType=INTEGER}, " +
-            " #{a_Vid ,mode=IN ,jdbcType=INTEGER}, " +
-            " #{cur_page,  mode=IN ,jdbcType=INTEGER}, " +
-            " #{page_total , mode=OUT ,jdbcType=INTEGER}, " +
-            " #{row_total ,mode=OUT ,jdbcType=INTEGER}, " +
-            " #{a_pagenum,  mode=OUT ,jdbcType=INTEGER} " +
-            " )")
-    @Options(statementType = StatementType.CALLABLE)
-    @Results({
-            @Result(column="Aid", property="aid", jdbcType=JdbcType.INTEGER, id=true),
-            @Result(column="Uid", property="uid", jdbcType=JdbcType.INTEGER),
-            @Result(column="Agree", property="agree", jdbcType=JdbcType.INTEGER),
-            @Result(column="Adate", property="adate", jdbcType=JdbcType.DATE),
-            @Result(column="Vid", property="vid", jdbcType=JdbcType.INTEGER),
-            @Result(column="Disagree", property="disagree", jdbcType=JdbcType.INTEGER),
-            @Result(column="Acontent", property="acontent", jdbcType=JdbcType.LONGVARCHAR)
+
+    @Select({
+            "SELECT * ",
+            "FROM review r ",
+            "JOIN movies m ON (r.Vid = m.Vid) ",
+            "WHERE r.Vid = #{vid};"
     })
-    ArrayList<Article> query(Map map);
+    @Results({
+            @Result(column="Vid", property="vid", jdbcType=JdbcType.INTEGER, id=true),
+            @Result(column="Vdate", property="vdate", jdbcType=JdbcType.DATE),
+            @Result(column="id", property="user", jdbcType=JdbcType.INTEGER,
+                    one = @One(select = "com.belong.mapper.UserMapper.queryUserById")),
+            @Result(column="views", property="views", jdbcType=JdbcType.DECIMAL),
+            @Result(column="Vname", property="vname", jdbcType=JdbcType.LONGVARCHAR),
+            @Result(column="Vinfo", property="vinfo", jdbcType=JdbcType.LONGVARCHAR),
+            @Result(column="Vpic", property="vpic", jdbcType=JdbcType.LONGVARBINARY),
+            @Result(column="Vsrc", property="vsrc", jdbcType=JdbcType.LONGVARCHAR)
+    })
+    Movies queryMoviesByVid(Integer vid);
 }

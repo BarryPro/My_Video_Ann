@@ -35,17 +35,17 @@ public class MoviesServiceImpl implements IMoviesService{
 
     @Override
     public ArrayList<Movies> search(Map map) {
-        return prodao.search(map);
+        return dao.search(map);
     }
 
     @Override
     public int views(Map map) {
-        dao.views(map);
+        return dao.views(map);
     }
 
     @Override
     public int upload(Map map) {
-        prodao.upload(map);
+        return dao.upload(map);
     }
 
     @Override
@@ -56,7 +56,7 @@ public class MoviesServiceImpl implements IMoviesService{
 
     @Override
     public ArrayList<Movies> getInfo(Map map) {
-        return prodao.getInfo(map);
+        return dao.getInfo(map);
     }
 
 }
