@@ -111,6 +111,7 @@ public class UserController {
             pro.load(is);
             String counter = pro.get(COUNT).toString();
             PrintWriter writer = response.getWriter();
+            OutputStream writer1 = response.getOutputStream();
             add();
             writer.write(counter);
             writer.flush();
